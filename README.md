@@ -14,6 +14,7 @@ The system detects network attacks and instantly sends alerts to Discord, improv
 ---
 
 ## Objectives
+The objectives of this project are:
 - Detect malicious network activity in real-time
 - Centralize logs using Elastic Stack
 - Visualize threats using Kibana dashboards
@@ -23,6 +24,7 @@ The system detects network attacks and instantly sends alerts to Discord, improv
 ---
 
 ## Tools and Technologies
+The tools that are used in this project are:
 - Suricata IDS
 - Elasticsearch
 - Logstash
@@ -37,7 +39,9 @@ The system detects network attacks and instantly sends alerts to Discord, improv
 ---
 
 ## Installation and Configuration
-1. Install and Configure Elasticsearch
+This part explain how each tools for the SIEM is intalled and configured
+
+### 1. Install and Configure Elasticsearch
 
 Install Elasticsearch with:
 ```
@@ -65,7 +69,8 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
 
 we can save this password, because it will later be used for Kibana login.
 
-2. Install and Configure Kibana
+
+### 2. Install and Configure Kibana
 Install Kibana with:
 ```
 sudo apt install kibana -y
@@ -90,7 +95,8 @@ we can access the Kibana dashboard with:
   - Username: ```elastic```
   - Pasword: the one we generate from earlier
 
-3. Inatall and Configure Suricata
+
+### 3. Inatall and Configure Suricata
 Install Suricata with:
 ```
 sudo apt install suricata -y
@@ -130,7 +136,8 @@ we can check the logs with:
 sudo tail -f /var/log/suricata/eve.json
 ```
 
-4. Install andConfigure Filebeat
+
+### 4. Install andConfigure Filebeat
 Install the filebeat using:
 ```
 sudo apt install filebeat -y
@@ -165,7 +172,8 @@ sudo systemctl enable filebeat
 sudo systemctl start filebeat
 ```
 
-5. Configure Discord Alert
+
+### 5. Configure Discord Alert
 Create a Channel for the alert to go:
 
 ```#alert-kibana```
@@ -183,7 +191,9 @@ WEBHOOK_URL
 
 if it works, you will get a discord notification on the channel that you make
 
-6. Create Alert Automation Script
+
+### 6. Create Alert Automation Script
+To send the Alert from suricata to discord as a notification, a script is needed:
 ```
 #!/bin/bash
 
@@ -252,3 +262,75 @@ crontab -3
 ```
 
 then add: ```* * * * * /path/to/scripts/alert.sh```. This will run the script every minutes
+
+---
+
+## Attack Simulation Phase
+To validate the effectiveness of the SIEM system, a couple attack simulation were performed.
+
+### 1. Nmap Scan (Reconnaissance Attack)
+An Nmap scan was performed from Kali Linux to simulate reconnaissance activity:
+
+```
+nmap -sS -A 192.168.10.3
+```
+
+#### Result 
+- Suricata successfully detected the scan
+- Alert generated:
+  **ET SCAN Possible Nmap User-Agent Observed**
+
+
+
+### 2. Directory Brute Force (Gobuster)
+A directory brute-force attack was executed to discover hidden paths on the web server:
+
+```
+gobuster dir -u http://192.168.10.3 -w /usr/share/wordlists/dirb/common.txt
+```
+
+#### Result
+- Significant increase in traffic observed
+- Multiple alerts triggered in Suricata
+- Kibana dashboard showed spike in events
+
+
+
+### 3. Abnormal HTTP Traffic 
+During scanning, Suricata generate alerts such as:
+
+- **SURICATA HTTP unable to match response to request**
+
+#### Result
+This indicates irregular HTTP behavior caused by automated tools.
+
+
+
+### Real-Time Discord Alerts
+The system successfully delivered real-time alerts via Discord webhook.
+
+#### Alert Contains:
+- Source IP
+- Destination IP
+- Attack Type
+
+--- 
+
+## Summary
+
+All simulated attacks were successfully:
+- Detected by Suricata
+- Processed by Elastic Search
+- Visualized in Kibana
+- Sent as alerts to Discord
+
+This confitms that the SIEM pipeline is functioning correctly end-to-end
+
+## Documentation
+
+Documentation PDF = [Project PDF](./ProjectSIEMKibana.pdf)
+
+Discord Alert Scriot = [Discord Notification Script](./scripts/alert.sh)
+
+## Author
+- Haikal Raihan Hafidz (KiMiRoTa)
