@@ -251,4 +251,4 @@ We can also automate the script (optional):
 crontab -3
 ```
 
-then add: ```* * * * * /path/to/scripts/alert.sh```. This will the script runs every minutes
+then add: ```* * * * * /path/to/scripts/alert.sh```. This will run the script every minutes
