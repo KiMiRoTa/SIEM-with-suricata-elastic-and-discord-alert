@@ -37,6 +37,15 @@ The tools that are used in this project are:
 - hping3
 
 ---
+## Lab Environment Setup
+
+| Device                         | IP Address     | Role                              |
+|--------------------------------|----------------|-----------------------------------|
+| SIEM Server                    | 192.168.10.3   | Suricata IDS + Elastic Stack      |
+| Kali Linux (Nmap Attacker)     | 192.168.10.4   | Network Scanning (Nmap)           |
+| Kali Linux (Web Attacker)      | 192.168.10.5   | HTTP & Directory Brute Force      |
+
+---
 
 ## Installation and Configuration
 This part explain how each tools for the SIEM is intalled and configured
@@ -280,7 +289,8 @@ nmap -sS -A 192.168.10.3
 - Alert generated:
   **ET SCAN Possible Nmap User-Agent Observed**
 
-
+![Nmap scan Evemt in Kibana Dashboard](./Images/NmapEve.png)
+![Nmap scan Attacker IP](./Images/NmapIP.png)
 
 ### 2. Directory Brute Force (Gobuster)
 A directory brute-force attack was executed to discover hidden paths on the web server:
@@ -294,7 +304,7 @@ gobuster dir -u http://192.168.10.3 -w /usr/share/wordlists/dirb/common.txt
 - Multiple alerts triggered in Suricata
 - Kibana dashboard showed spike in events
 
-
+![Captured IP of HTTP and Directory attacker](./Images/DirectoryandHTTPIP.png)
 
 ### 3. Abnormal HTTP Traffic 
 During scanning, Suricata generate alerts such as:
@@ -304,15 +314,17 @@ During scanning, Suricata generate alerts such as:
 #### Result
 This indicates irregular HTTP behavior caused by automated tools.
 
+![HTTP Event in Kibana Dashboard](./Images/HTTPEve.png)
 
-
-### Real-Time Discord Alerts
+### 4. Real-Time Discord Alerts
 The system successfully delivered real-time alerts via Discord webhook.
 
 #### Alert Contains:
 - Source IP
 - Destination IP
 - Attack Type
+
+![Discord Alert](./Images/DiscordAlert.png)
 
 --- 
 
