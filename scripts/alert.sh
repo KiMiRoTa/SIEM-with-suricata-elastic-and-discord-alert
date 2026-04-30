@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WEBHOOK_URL="YOUR_DIWSCORD_WEBHOOK_URL"
+WEBHOOK_URL="YOUR_DISCORD_WEBHOOK_URL"
 LAST_ALERT_FILE="/tmp/last_alert"
 LAST_TIME_FILE="/tmp/last_time"
 ELASTIC_URL="http://localhost:9200"
