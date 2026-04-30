@@ -164,3 +164,26 @@ and start the filebeat:
 sudo systemctl enable filebeat
 sudo systemctl start filebeat
 ```
+
+5. Configure Discord Alert
+Create a Channel for the alert to go:
+
+```#alert-kibana```
+
+Create Webhook by going to:
+- Server settings --> integrations --> Webhooks
+- Copy the Webhook URL
+
+Test the webhook:
+```
+curl -H "Content-type: application/json"
+-d '{"content":"Test Alert from SIEM"}'
+WEBHOOK_URL
+```
+
+if it works, you will get a discord notification on the channel that you make
+
+6. Create Alert Automation Script
+```
+
+```
